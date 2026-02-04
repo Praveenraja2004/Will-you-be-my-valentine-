@@ -8,37 +8,45 @@
 <style>
 body {
     margin: 0;
-    height: 100vh;
+    min-height: 100vh;
     background: linear-gradient(135deg, #ff9a9e, #fad0c4);
     display: flex;
     justify-content: center;
     align-items: center;
     font-family: 'Comic Sans MS', cursive;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
+/* 💌 Card */
 .card {
     background: white;
-    padding: 35px;
-    border-radius: 25px;
+    padding: 25px;
+    border-radius: 22px;
     text-align: center;
-    width: 330px;
+    width: 90%;
+    max-width: 360px;
     box-shadow: 0 0 30px rgba(255, 0, 100, 0.4);
     position: relative;
-    z-index: 2;
+    z-index: 5;
 }
 
-h1 { color: #ff3366; }
+h1 {
+    color: #ff3366;
+    font-size: 22px;
+}
 
-p { font-size: 18px; }
+p {
+    font-size: 16px;
+}
 
+/* 💖 Buttons */
 button {
-    font-size: 18px;
-    padding: 12px 25px;
+    font-size: 16px;
+    padding: 10px 22px;
     border-radius: 30px;
     border: none;
     cursor: pointer;
-    margin: 10px;
+    margin: 8px;
 }
 
 #yes {
@@ -48,27 +56,27 @@ button {
 
 #no {
     background: #ddd;
-    position: relative;
 }
 
+/* 💬 Text */
 #message {
-    margin-top: 20px;
-    font-size: 20px;
+    margin-top: 15px;
+    font-size: 18px;
     color: #ff3366;
 }
 
 #countdown {
-    margin-top: 15px;
-    font-size: 16px;
+    margin-top: 10px;
+    font-size: 14px;
 }
 
-/* 💗 Falling hearts */
+/* 💗 Hearts / Flowers */
 .heart {
     position: fixed;
     top: -30px;
-    animation: fall linear forwards;
     z-index: 1;
     pointer-events: none;
+    animation: fall linear forwards;
 }
 
 @keyframes fall {
@@ -76,6 +84,26 @@ button {
         transform: translateY(110vh);
         opacity: 0;
     }
+}
+
+/* 🎵 Spotify responsive */
+.spotify-container {
+    width: 100%;
+    margin-top: 15px;
+}
+
+.spotify-container iframe {
+    width: 100%;
+    height: 80px;
+    border-radius: 12px;
+    border: none;
+}
+
+/* 📱 Mobile tweak */
+@media (max-width: 480px) {
+    h1 { font-size: 20px; }
+    p { font-size: 15px; }
+    #message { font-size: 17px; }
 }
 </style>
 </head>
@@ -94,15 +122,11 @@ button {
     <div id="message"></div>
     <div id="countdown"></div>
 
-    <!-- 🎵 Spotify (hidden until YES, NEVER opens new tab) -->
-    <div id="spotify" style="display:none; margin-top:20px;">
+    <!-- 🎵 Spotify -->
+    <div id="spotify" class="spotify-container" style="display:none;">
         <p>🎶 Tap play — this song reminds me of us 💕</p>
         <iframe
-            style="border-radius:12px"
             src="https://open.spotify.com/embed/track/6XmBh5HSdVzEAaqzEftL9t"
-            width="100%"
-            height="352"
-            frameborder="0"
             allow="encrypted-media"
             loading="lazy">
         </iframe>
@@ -110,56 +134,51 @@ button {
 </div>
 
 <script>
-// 💗 Heart emojis
+// 💗 Heart & Flower emojis
 const hearts = ["💗","💖","💕","💘","💞","🌹"];
-let heartIntervalStarted = false;
+let raining = false;
 
-// 🌹 Infinite heart rain
+// 🌹 Infinite heart rain (mobile safe)
 function startHeartRain() {
-    if (heartIntervalStarted) return;
-    heartIntervalStarted = true;
+    if (raining) return;
+    raining = true;
 
     setInterval(() => {
         const heart = document.createElement("div");
         heart.className = "heart";
         heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
         heart.style.left = Math.random() * 100 + "vw";
-        heart.style.fontSize = (18 + Math.random() * 22) + "px";
-        heart.style.animationDuration = (3 + Math.random() * 4) + "s";
+        heart.style.fontSize = (14 + Math.random() * 18) + "px";
+        heart.style.animationDuration = (3 + Math.random() * 3) + "s";
         document.body.appendChild(heart);
+
         setTimeout(() => heart.remove(), 7000);
-    }, 180);
+    }, 220);
 }
 
-// 💖 YES button
+// 💖 YES
 function sayYes() {
     document.getElementById("message").innerHTML =
         "YAYYYY 💕<br>Neeraja, you just made me the happiest person 😘";
 
-    // remove NO button only after YES
     document.getElementById("no").style.display = "none";
-
     startHeartRain();
-
     document.getElementById("spotify").style.display = "block";
 }
 
-// 😈 NO button RUNS AWAY (stays on screen)
+// 😈 NO button escapes (mobile safe)
 function moveNo() {
     const btn = document.getElementById("no");
 
-    const maxX = window.innerWidth - btn.offsetWidth - 20;
-    const maxY = window.innerHeight - btn.offsetHeight - 20;
-
-    const x = Math.random() * maxX;
-    const y = Math.random() * maxY;
+    const maxX = window.innerWidth - btn.offsetWidth - 10;
+    const maxY = window.innerHeight - btn.offsetHeight - 10;
 
     btn.style.position = "fixed";
-    btn.style.left = x + "px";
-    btn.style.top = y + "px";
+    btn.style.left = Math.random() * maxX + "px";
+    btn.style.top = Math.random() * maxY + "px";
 }
 
-// ⏳ Countdown timer
+// ⏳ Countdown
 const valentineDate = new Date("February 14, 2026 19:00:00").getTime();
 
 setInterval(() => {
