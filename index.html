@@ -24,6 +24,8 @@ body {
     text-align: center;
     width: 330px;
     box-shadow: 0 0 30px rgba(255, 0, 100, 0.4);
+    position: relative;
+    z-index: 2;
 }
 
 h1 {
@@ -62,6 +64,22 @@ button {
     margin-top: 15px;
     font-size: 16px;
 }
+
+/* 💗 Falling hearts */
+.heart {
+    position: fixed;
+    top: -30px;
+    animation: fall linear forwards;
+    z-index: 1;
+    pointer-events: none;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(110vh);
+        opacity: 0;
+    }
+}
 </style>
 </head>
 
@@ -71,7 +89,7 @@ button {
     <h1>💘 Hey Neeraja G 💘</h1>
 
     <p>Will you be my Valentine?</p>
-    <p><i>Because your my pondati forever❤️💕😘</i></p>
+    <p><i>because your my pondati forever 😘💕</i></p>
 
     <button id="yes" onclick="sayYes()">YES 💖</button>
     <button id="no" onclick="moveNo()">NO 😢</button>
@@ -83,9 +101,8 @@ button {
     <div id="spotify" style="display:none; margin-top:20px;">
         <p>🎶 This song reminds me of us 💕</p>
 
-        <iframe data-testid="embed-iframe"
-        style="border-radius:12px"
-        src="https://open.spotify.com/embed/track/6XmBh5HSdVzEAaqzEftL9t?utm_source=generator"
+        <iframe style="border-radius:12px"
+        src="https://open.spotify.com/embed/track/6XmBh5HSdVzEAaqzEftL9t"
         width="100%" height="352"
         frameborder="0"
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
@@ -94,43 +111,48 @@ button {
 </div>
 
 <script>
-// 🎉 CONFETTI EFFECT
-function confettiExplosion() {
-    for (let i = 0; i < 150; i++) {
-        const confetti = document.createElement("div");
-        confetti.style.position = "fixed";
-        confetti.style.width = "8px";
-        confetti.style.height = "8px";
-        confetti.style.backgroundColor = `hsl(${Math.random()*360},100%,50%)`;
-        confetti.style.left = Math.random() * 100 + "vw";
-        confetti.style.top = "-10px";
-        confetti.style.opacity = Math.random();
-        confetti.style.transform = `rotate(${Math.random()*360}deg)`;
-        document.body.appendChild(confetti);
+// 💗 HEART EMOJIS POOL
+const hearts = ["💗","💖","💕","💘","💞","🌹"];
 
-        confetti.animate([
-            { transform: "translateY(0)" },
-            { transform: "translateY(100vh)" }
-        ], {
-            duration: 2000 + Math.random() * 2000,
-            easing: "ease-out"
-        });
+// 🌹 HEART RAIN LOOP
+let heartInterval;
 
-        setTimeout(() => confetti.remove(), 4000);
-    }
+function startHeartRain() {
+    heartInterval = setInterval(() => {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = (18 + Math.random() * 22) + "px";
+        heart.style.animationDuration = (3 + Math.random() * 4) + "s";
+        document.body.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 7000);
+    }, 150);
 }
 
-// 💖 YES BUTTON (UPDATED)
+// 💖 YES BUTTON
 function sayYes() {
     document.getElementById("message").innerHTML =
         "YAYYYY 💕<br>Neeraja, you just made me the happiest person 😘";
 
-    confettiExplosion();
+    // 🔒 Remove NO button forever
+    document.getElementById("no").remove();
 
+    // 🌹 Start infinite heart rain
+    startHeartRain();
+
+    // 🎵 Show Spotify
     document.getElementById("spotify").style.display = "block";
+
+    // 🎶 Auto-open Spotify (plays in app)
+    window.open(
+        "https://open.spotify.com/track/6XmBh5HSdVzEAaqzEftL9t",
+        "_blank"
+    );
 }
 
-// 😈 NO BUTTON RUNS AWAY
+// 😈 NO BUTTON RUNS AWAY (before YES)
 function moveNo() {
     const btn = document.getElementById("no");
     btn.style.position = "absolute";
@@ -138,30 +160,28 @@ function moveNo() {
     btn.style.top = Math.random() * 80 + "vh";
 }
 
-// ⏳ COUNTDOWN TIMER (EDIT DATE & TIME IF NEEDED)
+// ⏳ COUNTDOWN TIMER
 const valentineDate = new Date("February 14, 2026 19:00:00").getTime();
 
 setInterval(() => {
     const now = new Date().getTime();
-    const distance = valentineDate - now;
+    const d = valentineDate - now;
 
-    if (distance < 0) {
+    if (d < 0) {
         document.getElementById("countdown").innerHTML =
             "💖 It's Valentine time! 💖";
         return;
     }
 
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((distance / (1000 * 60)) % 60);
-    const seconds = Math.floor((distance / 1000) % 60);
+    const days = Math.floor(d / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((d / (1000 * 60 * 60)) % 24);
+    const mins = Math.floor((d / (1000 * 60)) % 60);
+    const secs = Math.floor((d / 1000) % 60);
 
     document.getElementById("countdown").innerHTML =
-        `⏳ ${days}d ${hours}h ${minutes}m ${seconds}s until our date 💕`;
+        `⏳ ${days}d ${hours}h ${mins}m ${secs}s until our date 💕`;
 }, 1000);
 </script>
 
 </body>
 </html>
-
-
