@@ -22,7 +22,7 @@ body {
     padding: 35px;
     border-radius: 25px;
     text-align: center;
-    width: 320px;
+    width: 330px;
     box-shadow: 0 0 30px rgba(255, 0, 100, 0.4);
 }
 
@@ -67,14 +67,9 @@ button {
 
 <body>
 
-<!-- 🎶 Background Music -->
-<audio id="music" loop>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-</audio>
-
 <div class="card">
-    <!-- ✨ CUSTOMIZE HERE ✨ -->
-    <h1>💘 Hey <span id="herName">MY LOVE</span> 💘</h1>
+    <h1>💘 Hey Neeraja G 💘</h1>
+
     <p>Will you be my Valentine?</p>
     <p><i>Because you still owe me that coffee ☕😉</i></p>
 
@@ -83,10 +78,23 @@ button {
 
     <div id="message"></div>
     <div id="countdown"></div>
+
+    <!-- 🎵 Spotify (hidden until YES) -->
+    <div id="spotify" style="display:none; margin-top:20px;">
+        <p>🎶 This song reminds me of us 💕</p>
+
+        <iframe data-testid="embed-iframe"
+        style="border-radius:12px"
+        src="https://open.spotify.com/embed/track/6XmBh5HSdVzEAaqzEftL9t?utm_source=generator"
+        width="100%" height="352"
+        frameborder="0"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"></iframe>
+    </div>
 </div>
 
 <script>
-// 🎉 CONFETTI
+// 🎉 CONFETTI EFFECT
 function confettiExplosion() {
     for (let i = 0; i < 150; i++) {
         const confetti = document.createElement("div");
@@ -102,7 +110,7 @@ function confettiExplosion() {
 
         confetti.animate([
             { transform: "translateY(0)" },
-            { transform: `translateY(100vh)` }
+            { transform: "translateY(100vh)" }
         ], {
             duration: 2000 + Math.random() * 2000,
             easing: "ease-out"
@@ -112,12 +120,14 @@ function confettiExplosion() {
     }
 }
 
-// 💖 YES BUTTON
+// 💖 YES BUTTON (UPDATED)
 function sayYes() {
     document.getElementById("message").innerHTML =
-        "YAYYYY 💕<br>You just made me the happiest person 😘";
+        "YAYYYY 💕<br>Neeraja, you just made me the happiest person 😘";
+
     confettiExplosion();
-    document.getElementById("music").play();
+
+    document.getElementById("spotify").style.display = "block";
 }
 
 // 😈 NO BUTTON RUNS AWAY
@@ -128,7 +138,7 @@ function moveNo() {
     btn.style.top = Math.random() * 80 + "vh";
 }
 
-// ⏳ COUNTDOWN TIMER (SET YOUR DATE)
+// ⏳ COUNTDOWN TIMER (EDIT DATE & TIME IF NEEDED)
 const valentineDate = new Date("February 14, 2026 19:00:00").getTime();
 
 setInterval(() => {
