@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>💖 Valentine Surprise 💖</title>
+
+<style>
+body {
+    background: linear-gradient(to right, #ff9a9e, #fad0c4);
+    font-family: 'Comic Sans MS', cursive;
+    text-align: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    background: white;
+    padding: 40px;
+    border-radius: 25px;
+    box-shadow: 0 0 25px rgba(255,0,0,0.4);
+    width: 320px;
+}
+
+h1 {
+    color: #ff3366;
+}
+
+button {
+    font-size: 18px;
+    padding: 12px 25px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    margin: 15px;
+}
+
+#yes {
+    background: #ff3366;
+    color: white;
+}
+
+#no {
+    background: #ddd;
+}
+
+#message {
+    font-size: 22px;
+    margin-top: 20px;
+    color: #ff3366;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <h1>💘 Will you be my Valentine? 💘</h1>
+
+    <button id="yes" onclick="sayYes()">YES 💖</button>
+    <button id="no" onmouseover="moveNo()">NO 😢</button>
+
+    <div id="message"></div>
+</div>
+
+<script>
+function sayYes() {
+    document.getElementById("message").innerHTML =
+    "YAYYY! 💕<br>See you on Feb 14 😘<br>Get ready for a surprise!";
+}
+
+function moveNo() {
+    const btn = document.getElementById("no");
+    btn.style.position = "absolute";
+    btn.style.left = Math.random() * 80 + "vw";
+    btn.style.top = Math.random() * 80 + "vh";
+}
+</script>
+
+</body>
+</html>
