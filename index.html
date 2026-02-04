@@ -28,13 +28,9 @@ body {
     z-index: 2;
 }
 
-h1 {
-    color: #ff3366;
-}
+h1 { color: #ff3366; }
 
-p {
-    font-size: 18px;
-}
+p { font-size: 18px; }
 
 button {
     font-size: 18px;
@@ -52,6 +48,7 @@ button {
 
 #no {
     background: #ddd;
+    position: relative;
 }
 
 #message {
@@ -97,25 +94,31 @@ button {
     <div id="message"></div>
     <div id="countdown"></div>
 
-    <!-- 🎵 Spotify (hidden until YES) -->
+    <!-- 🎵 Spotify (hidden until YES, NEVER opens new tab) -->
     <div id="spotify" style="display:none; margin-top:20px;">
         <p>🎶 Tap play — this song reminds me of us 💕</p>
-
-        <iframe style="border-radius:12px"
-        src="https://open.spotify.com/embed/track/6XmBh5HSdVzEAaqzEftL9t"
-        width="100%" height="352"
-        frameborder="0"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy"></iframe>
+        <iframe
+            style="border-radius:12px"
+            src="https://open.spotify.com/embed/track/6XmBh5HSdVzEAaqzEftL9t"
+            width="100%"
+            height="352"
+            frameborder="0"
+            allow="encrypted-media"
+            loading="lazy">
+        </iframe>
     </div>
 </div>
 
 <script>
-// 💗 HEART EMOJIS
+// 💗 Heart emojis
 const hearts = ["💗","💖","💕","💘","💞","🌹"];
+let heartIntervalStarted = false;
 
-// 🌹 HEART RAIN LOOP
+// 🌹 Infinite heart rain
 function startHeartRain() {
+    if (heartIntervalStarted) return;
+    heartIntervalStarted = true;
+
     setInterval(() => {
         const heart = document.createElement("div");
         heart.className = "heart";
@@ -124,44 +127,47 @@ function startHeartRain() {
         heart.style.fontSize = (18 + Math.random() * 22) + "px";
         heart.style.animationDuration = (3 + Math.random() * 4) + "s";
         document.body.appendChild(heart);
-
         setTimeout(() => heart.remove(), 7000);
-    }, 150);
+    }, 180);
 }
 
-// 💖 YES BUTTON
+// 💖 YES button
 function sayYes() {
     document.getElementById("message").innerHTML =
         "YAYYYY 💕<br>Neeraja, you just made me the happiest person 😘";
 
-    // 🔒 Remove NO button forever
-    document.getElementById("no").remove();
+    // remove NO button only after YES
+    document.getElementById("no").style.display = "none";
 
-    // 🌹 Start infinite heart rain
     startHeartRain();
 
-    // 🎵 Show Spotify player
     document.getElementById("spotify").style.display = "block";
 }
 
-// 😈 NO BUTTON RUNS AWAY (before YES)
+// 😈 NO button RUNS AWAY (stays on screen)
 function moveNo() {
     const btn = document.getElementById("no");
-    btn.style.position = "absolute";
-    btn.style.left = Math.random() * 80 + "vw";
-    btn.style.top = Math.random() * 80 + "vh";
+
+    const maxX = window.innerWidth - btn.offsetWidth - 20;
+    const maxY = window.innerHeight - btn.offsetHeight - 20;
+
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+
+    btn.style.position = "fixed";
+    btn.style.left = x + "px";
+    btn.style.top = y + "px";
 }
 
-// ⏳ COUNTDOWN TIMER
+// ⏳ Countdown timer
 const valentineDate = new Date("February 14, 2026 19:00:00").getTime();
 
 setInterval(() => {
-    const now = new Date().getTime();
+    const now = Date.now();
     const d = valentineDate - now;
 
     if (d < 0) {
-        document.getElementById("countdown").innerHTML =
-            "💖 It's Valentine time! 💖";
+        document.getElementById("countdown").innerHTML = "💖 It's Valentine time! 💖";
         return;
     }
 
