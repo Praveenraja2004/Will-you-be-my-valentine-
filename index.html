@@ -99,7 +99,7 @@ button {
 
     <!-- 🎵 Spotify (hidden until YES) -->
     <div id="spotify" style="display:none; margin-top:20px;">
-        <p>🎶 This song reminds me of us 💕</p>
+        <p>🎶 Tap play — this song reminds me of us 💕</p>
 
         <iframe style="border-radius:12px"
         src="https://open.spotify.com/embed/track/6XmBh5HSdVzEAaqzEftL9t"
@@ -111,14 +111,12 @@ button {
 </div>
 
 <script>
-// 💗 HEART EMOJIS POOL
+// 💗 HEART EMOJIS
 const hearts = ["💗","💖","💕","💘","💞","🌹"];
 
 // 🌹 HEART RAIN LOOP
-let heartInterval;
-
 function startHeartRain() {
-    heartInterval = setInterval(() => {
+    setInterval(() => {
         const heart = document.createElement("div");
         heart.className = "heart";
         heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
@@ -142,14 +140,8 @@ function sayYes() {
     // 🌹 Start infinite heart rain
     startHeartRain();
 
-    // 🎵 Show Spotify
+    // 🎵 Show Spotify player
     document.getElementById("spotify").style.display = "block";
-
-    // 🎶 Auto-open Spotify (plays in app)
-    window.open(
-        "https://open.spotify.com/track/6XmBh5HSdVzEAaqzEftL9t",
-        "_blank"
-    );
 }
 
 // 😈 NO BUTTON RUNS AWAY (before YES)
